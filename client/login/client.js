@@ -1,0 +1,125 @@
+const handleLogin = (e) => {
+    e.preventDefault();
+    
+    $("#domoMessage").animate({width:'hide'}, 350);
+    
+    if($("#user").val() == '' || $("#pass").val() = =''){
+        handleError("Username or password is empty");
+        return false;
+    }
+    
+    console.log($("input[name=_csrf").val());
+    
+    sendAjax('POST', $("#loginForm").attr("action"), $("#loginForm").serialize(), redirect);
+    
+    return false;
+};
+
+const handleSignup = (e) => {
+    e.preventDefault();
+    
+    $("#domoMessage").animate({width:'hide'}, 350);
+    
+    if($("#user").val() == '' || $("#pass").val() = ='' || $("#pass2").val() = =''){
+        handleError("All fields are required");
+        return false;
+    }
+    
+    if($("#pass").val() !== $("#pass2").val()){
+        handleError("Passwords do not match");
+        return false;
+    }
+    
+    sendAjax('POST', $("#signupForm").attr("action"), $("#signupForm").serialize(), redirect);
+    
+    return false;
+};
+
+const renderLogin = function(){
+    return(
+    <form id="loginForm" name ="loginForm"
+          onSubmit = {this.handleSubmit}
+          action = "/login"
+          method = "POST"
+          className = "mainForm">
+        <label htmlFor="username">Username: </label>
+        <input id="user" type="text" name="username" placeholder="username"/>
+        <label htmlFor="pass">Password: </label>
+        <input id="pass" type="password" name="pass" placeholder="password"/>
+        <input type="hidden" name="_csrf" value={this.props.csrf}/>
+        <input className="formSubmit" type="submit" value="Sign In"/>
+    </form>
+    );
+};
+
+const renderSignup = function(){
+    return(
+    <form id="signupForm" name ="signupForm"
+          onSubmit = {this.handleSubmit}
+          action = "/signup"
+          method = "POST"
+          className = "mainForm">
+        <label htmlFor="username">Username: </label>
+        <input id="user" type="text" name="username" placeholder="username"/>
+        <label htmlFor="pass">Password: </label>
+        <input id="pass" type="password" name="pass" placeholder="password"/>
+        <label htmlFor="pass2">Password: </label>
+        <input id="pass2" type="password" name="pass2" placeholder="retype password"/>
+        <input type="hidden" name="_csrf" value={this.props.csrf}/>
+        <input className="formSubmit" type="submit" value="Sign Up"/>
+    </form>
+    );
+};
+
+const createLoginWindow = function (csrf) {
+    const LoginWindow = React.createClass({
+        handleSubmit: handleLogin,
+        render: renderLogin
+    });
+    
+    ReactDOM.render(
+      <LoginWindow csrf={csrf}/>,
+      document.querySelector("#content");
+    );
+}
+
+const createSignupWindow = function (csrf) {
+    const SignupWindow = React.createClass({
+        handleSubmit: handleSignup,
+        render: renderSignup
+    });
+    
+    ReactDOM.render(
+      <LoginWindow csrf={csrf}/>,
+      document.querySelector("#content");
+    );
+}
+
+const setup = function(csrf){
+    const loginButton = document.querySelctor("#loginButton");
+    const signupButton = document.querySelector("#signupButton");
+    
+    signupButton.addEventListenter("click", (e) =>{
+       e.preventDefault();
+       createSignupWindow(csrf);
+       return false;       
+    });
+    
+    loginButton.addEventListenter("click", (e) =>{
+       e.preventDefault();
+       createLoginWindow(csrf);
+       return false;       
+    });
+    
+    createLoginWindow(csrf);
+};
+
+const getToken = () => {
+    sendAjax('GET', '/getToken', null, (result) =>{
+        setup(results.csrfToken);
+    });
+}
+
+$(document).ready(function(){
+   getToken(); 
+});
