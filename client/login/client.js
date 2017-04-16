@@ -3,7 +3,7 @@ const handleLogin = (e) => {
     
     $("#domoMessage").animate({width:'hide'}, 350);
     
-    if($("#user").val() == '' || $("#pass").val() = =''){
+    if($("#user").val() == '' || $("#pass").val() == ''){
         handleError("Username or password is empty");
         return false;
     }
@@ -20,7 +20,7 @@ const handleSignup = (e) => {
     
     $("#domoMessage").animate({width:'hide'}, 350);
     
-    if($("#user").val() == '' || $("#pass").val() = ='' || $("#pass2").val() = =''){
+    if($("#user").val() == '' || $("#pass").val() == '' || $("#pass2").val() == ''){
         handleError("All fields are required");
         return false;
     }
@@ -79,7 +79,7 @@ const createLoginWindow = function (csrf) {
     
     ReactDOM.render(
       <LoginWindow csrf={csrf}/>,
-      document.querySelector("#content");
+      document.querySelector("#content")
     );
 }
 
@@ -90,22 +90,22 @@ const createSignupWindow = function (csrf) {
     });
     
     ReactDOM.render(
-      <LoginWindow csrf={csrf}/>,
-      document.querySelector("#content");
+      <SignupWindow csrf={csrf}/>,
+      document.querySelector("#content")
     );
 }
 
 const setup = function(csrf){
-    const loginButton = document.querySelctor("#loginButton");
+    const loginButton = document.querySelector("#loginButton");
     const signupButton = document.querySelector("#signupButton");
     
-    signupButton.addEventListenter("click", (e) =>{
+    signupButton.addEventListener("click", (e) =>{
        e.preventDefault();
        createSignupWindow(csrf);
        return false;       
     });
     
-    loginButton.addEventListenter("click", (e) =>{
+    loginButton.addEventListener("click", (e) =>{
        e.preventDefault();
        createLoginWindow(csrf);
        return false;       
@@ -116,7 +116,7 @@ const setup = function(csrf){
 
 const getToken = () => {
     sendAjax('GET', '/getToken', null, (result) =>{
-        setup(results.csrfToken);
+        setup(result.csrfToken);
     });
 }
 

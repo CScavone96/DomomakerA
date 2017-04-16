@@ -39,7 +39,7 @@ const renderDomo = function(){
 };
 
 const renderDomoList = function(){
-    if(this.state.date.length === 0){
+    if(this.state.data.length === 0){
         return (
         <div className="domoList">
           <h3 className ="emptyDomo"> No Domos yet</h3>
@@ -62,7 +62,7 @@ const renderDomoList = function(){
         {domoNodes}
       </div>
     );
-}
+};
 
 const handleError = (message) => {
   $("#errorMessage").text(message);
@@ -163,7 +163,7 @@ const setup = function(csrf) {
   });
   
   domoForm = ReactDOM.render(
-    <DomoFormClass csrf={csrf)/>, document.querySelector("#makeDomo")
+    <DomoFormClass csrf={csrf}/>, document.querySelector("#makeDomo")
     );
     
   domoRenderer = ReactDOM.render(
