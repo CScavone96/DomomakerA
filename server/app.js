@@ -30,7 +30,7 @@ let redisURL = {
 let redisPASS;
 
 if (process.env.REDISCLOUD_URL) {
-  redisURL = url.prase(process.env.REDISCLOUD_URL);
+  redisURL = url.parse(process.env.REDISCLOUD_URL);
   redisPASS = redisURL.auth.split(':')[1];
 }
 
@@ -52,7 +52,7 @@ app.use(session({
   }),
   secret: 'Domo Arigato',
   resave: true,
-  saveUnininitialized: true,
+  saveUninitialized: true,
   cookie: {
     httpOnly: true,
   },
